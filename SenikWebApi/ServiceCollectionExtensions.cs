@@ -1,5 +1,5 @@
-﻿using Application.IServices;
-using Application.Services;
+﻿using Application.Services;
+using Infrastructure.IServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -63,7 +63,7 @@ public static class ServiceCollectionExtensions
     
     public static IServiceCollection AddServicesDIs(this IServiceCollection services)
     {
-        services.AddScoped<IClaimService, ClaimService>();
+        services.AddSingleton<IClaimService, ClaimService>();
         services.AddSingleton<IEmailService, EmailService>();
         return services;
     }

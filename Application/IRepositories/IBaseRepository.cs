@@ -1,6 +1,6 @@
 ﻿using Domain;
 
-namespace Infrastructure.IRepos;
+namespace Infrastructure.Interfaces;
 
 public interface IBaseRepository<TEntity>
 {

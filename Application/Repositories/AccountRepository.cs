@@ -1,9 +1,9 @@
 ﻿using DataAccess;
 using Domain;
-using Infrastructure.IRepos;
+using Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repos;
+namespace Infrastructure.Repositories;
 
 public class AccountRepository : BaseRepository<Account>, IAccountRepository
 {
@@ -20,6 +20,6 @@ public class AccountRepository : BaseRepository<Account>, IAccountRepository
 
     public async Task<List<Account>> GetAllAccountsAsync()
     {
-        return await _dbContext.Accounts.Include(x => x.CustomerInfor).ToListAsync();
+        return await _dbContext.Accounts.ToListAsync();
     }
 }

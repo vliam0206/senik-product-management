@@ -15,5 +15,8 @@ public class OrderConfig : IEntityTypeConfiguration<Order>
         builder.Property(x => x.TotalMoney).HasDefaultValue(0);
         builder.Property(x => x.TotalQuantity).HasDefaultValue(0);
         builder.Property(x => x.Status).HasDefaultValue(OrderStatusEnum.Waiting);
+
+        builder.HasOne(x => x.CustomerInfor).WithMany(c => c.Orders).HasForeignKey(x => x.CustomerId)
+               .OnDelete(DeleteBehavior.Restrict);
     }
 }

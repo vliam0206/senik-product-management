@@ -13,4 +13,5 @@ public class BaseEntity
     public int? ModifiedBy { get; set; }
     public DateTime? DeletionDate { get; set; }
     public bool IsDeleted { get; set; } = false;
+    public int? DeletedBy { get; set; }
 }

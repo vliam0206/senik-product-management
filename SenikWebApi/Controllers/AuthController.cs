@@ -1,9 +1,9 @@
 ﻿using Application.Commons;
-using Application.IServices;
 using Application.Utils;
 using AutoMapper;
 using Domain;
-using Infrastructure.IRepos;
+using Infrastructure.Interfaces;
+using Infrastructure.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SenikWebApi.Models;
@@ -15,19 +15,16 @@ namespace SenikWebApi.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAccountRepository _accountRepo;
-    private readonly ICustomerInforRepository _customerRepo;
     private readonly IClaimService _claimService;
     private readonly AppConfiguration _config;
     private readonly IMapper _mapper;
     public AuthController(IAccountRepository accountRepo, IClaimService claimService,
-                            AppConfiguration configuration, IMapper mapper,
-                            ICustomerInforRepository customerRepo)
+                            AppConfiguration configuration, IMapper mapper)
     {
         _accountRepo = accountRepo;
         _claimService = claimService;
         _config = configuration;
         _mapper = mapper;
-        _customerRepo = customerRepo;
     }
 
     [HttpPost("login")]
@@ -68,17 +65,8 @@ public class AuthController : ControllerBase
             else
             {
                 var account = _mapper.Map<Account>(model);
-                var customerInfo = _mapper.Map<CustomerInfor>(model);
                 // save account info
                 await _accountRepo.AddAsync(account);
-                // save customer info
-                acc = await _accountRepo.GetAccountByEmailAsync(model.Email);
-                customerInfo.AccountId = acc!.Id;
-                await _customerRepo.AddAsync(customerInfo);
-
-                acc.CustomerId = (await _customerRepo.GetAllAsync())
-                                .OrderBy(x => x.Id).Last().Id;
-                await _accountRepo.UpdateAsync(acc);
 
                 return Ok();
             }
