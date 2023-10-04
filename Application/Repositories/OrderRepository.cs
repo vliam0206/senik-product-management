@@ -1,5 +1,6 @@
 ﻿using Application.IRepositories;
 using Domain;
+using Domain.Enums;
 using Infrastructure.Daos;
 
 namespace Application.Repositories;
@@ -51,6 +52,18 @@ public class OrderRepository : IOrderRepository
             throw new ArgumentException($"Order with Id {order.Id} does not exist.");
         }
         await _orderDao.UpdateAsync(order);
+    }
+
+    public List<string> GetAllPaymentMethods()
+    {
+        var categories = Enum.GetNames(typeof(PaymentEnum));
+        return categories.ToList();
+    }
+
+    public List<string> GetAllStatus()
+    {
+        var categories = Enum.GetNames(typeof(OrderStatusEnum));
+        return categories.ToList();
     }
 }
 

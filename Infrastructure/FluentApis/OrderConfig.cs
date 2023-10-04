@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.FluentApis;
@@ -18,5 +19,8 @@ public class OrderConfig : IEntityTypeConfiguration<Order>
 
         builder.HasOne(x => x.CustomerInfor).WithMany(c => c.Orders).HasForeignKey(x => x.CustomerId)
                .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Property(x => x.Id)
+            .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
     }
 }

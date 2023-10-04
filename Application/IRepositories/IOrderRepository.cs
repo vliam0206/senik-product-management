@@ -9,4 +9,7 @@ public interface IOrderRepository
     Task<Order?> GetOrderByIdAsync(int orderId);
     Task<List<Order>> GetAllOrdersAsync();
     Task UpdateOrderAsync(Order order);
+
+    List<string> GetAllPaymentMethods();
+    List<string> GetAllStatus();
 }
