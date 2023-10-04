@@ -1,35 +1,114 @@
-﻿using Application.Commons;
-using AutoMapper;
+﻿using Microsoft.AspNetCore.Mvc;
 using Domain;
 using Infrastructure.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using SenikWebApi.Models;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SenikWebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class AccountsController : ControllerBase
 {
-    private readonly IAccountRepository _accountRepo;
+    private readonly IAccountRepository _accountRepository;
     private readonly IMapper _mapper;
-    public AccountsController(IAccountRepository accountRepo, IMapper mapper)
+
+    public AccountsController(IAccountRepository accountRepository,
+                                    IMapper mapper)
     {
-        _accountRepo = accountRepo;
+        _accountRepository = accountRepository;
         _mapper = mapper;
     }
 
+    // GET: api/Accounts
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    [Authorize(Roles = "Staff")]
+    public async Task<ActionResult<IEnumerable<AccountVM>>> GetAccounts()
     {
-        var accounts = new List<Account>();
         try
         {
-            accounts = await _accountRepo.GetAllAccountsAsync();
+            var accounts = await _accountRepository.GetAllAccountsAsync();
+            return Ok(_mapper.Map<List<AccountVM>>(accounts));
         } catch (Exception ex)
         {
             return BadRequest(new { ErrorMessage = ex.Message });
         }
-        return Ok(_mapper.Map<List<AccountVM>>(accounts));
+    }
+
+    // GET: api/Accounts/5
+    [HttpGet("{id}")]
+    public async Task<ActionResult<AccountVM>> GetAccount(int id)
+    {
+        var account = await _accountRepository.GetAccountByIdAsync(id);
+
+        if (account == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(_mapper.Map<AccountVM>(account));
+    }
+
+    // PUT: api/Accounts/5    
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutAccount(int id, AccountModel model)
+    {
+        try
+        {
+            var account = _mapper.Map<Account>(model);
+            account.Id = id;
+            await _accountRepository.UpdateAccountAsync(account);
+
+        } catch(ArgumentException ex)
+        {
+            return NotFound(new { ErrorMessage = ex.Message });
+        } catch (Exception ex)
+        {
+            return BadRequest(new { ErrorMessage = ex.Message });
+        }
+
+        return NoContent();
+    }
+
+    // POST: api/Accounts    
+    [HttpPost]
+    [Authorize(Roles = "Staff")]
+    public async Task<ActionResult<Account>> PostAccount(AccountModel model)
+    {
+        var account = _mapper.Map<Account>(model);
+        try
+        {
+            await _accountRepository.AddAccountAsync(account);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { ErrorMessage = ex.Message });
+        }
+
+        return CreatedAtAction("GetAccount", new { id = account.Id }, _mapper.Map<AccountVM>(account));
+    }
+
+    // DELETE: api/Accounts/5
+    [HttpDelete("{id}")]
+    [Authorize(Roles = "Staff")]
+    public async Task<IActionResult> DeleteAccount(int id)
+    {
+        try
+        {
+            await _accountRepository.DeleteAccountAsync(id);
+
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(new { ErrorMessage = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { ErrorMessage = ex.Message });
+        }
+
+        return NoContent();
     }
 }

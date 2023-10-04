@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginModel model)
     {
-        var message = "";
+        string message;
         try
         {
             var account = await _accountRepo.GetAccountByEmailAsync(model.Email);
@@ -54,28 +54,15 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterModel model)
     {
-        var message = "";
         try
         {
-            var acc = await _accountRepo.GetAccountByEmailAsync(model.Email);
-            if (acc != null)
-            {
-                message = "Email is duplicated!";
-            }
-            else
-            {
-                var account = _mapper.Map<Account>(model);
-                // save account info
-                await _accountRepo.AddAsync(account);
-
-                return Ok();
-            }
+            await _accountRepo.AddAccountAsync(_mapper.Map<Account>(model));
+            return Ok();
         }
         catch (Exception ex)
         {
-            message = ex.Message;
-        }
-        return BadRequest(new { ErrorMessage = message });
+            return BadRequest(new { ErrorMessage = ex.Message });
+        }        
     }
 
     [HttpGet("current-id")]
@@ -91,6 +78,6 @@ public class AuthController : ControllerBase
     public IActionResult GetCurrentEmail()
     {
         var value = _claimService.GetCurrentUserName;
-        return Ok(new { CurrentUsername = value });
+        return Ok(new { CurrentEmail = value });
     }
 }
