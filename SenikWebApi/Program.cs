@@ -12,9 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddJsonOptions(opt
     => opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-
+// Add OData
+builder.Services.AddODataConfig();
 builder.Services.AddEndpointsApiExplorer();
+// Add Swagger configs
 builder.Services.AddSwaggerGenConfiguration();
+builder.Services.AddRouting(opt => opt.LowercaseUrls = true);
 
 // Bind AppConfiguration from configuration
 var config = new AppConfiguration();

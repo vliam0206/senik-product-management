@@ -17,7 +17,7 @@ public static class GenerateJsonWebTokenString
         {
             new Claim(ClaimTypes.SerialNumber ,user.Id.ToString()),
             new Claim(ClaimTypes.NameIdentifier, user.Email),
-            new Claim(ClaimTypes.Role, AccountTypeEnum.Customer.ToString())
+            new Claim(ClaimTypes.Role, user.Role.ToString())
         };
         var token = new JwtSecurityToken(
             claims: claims,
