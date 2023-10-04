@@ -13,7 +13,7 @@ public class BaseDao<T> where T : BaseEntity
         _claimService = claimService;
     }
 
-    public async Task<List<T>> GetAllAsync()
+    public virtual async Task<List<T>> GetAllAsync()
     {
         var dbcontext = new AppDBContext();
         return await dbcontext.Set<T>().ToListAsync();
