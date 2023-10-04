@@ -1,7 +1,7 @@
 ﻿using Application.Commons;
 using System.Net.Mail;
 using System.Net;
-using Application.IServices;
+using Infrastructure.IServices;
 
 namespace Application.Services;
 

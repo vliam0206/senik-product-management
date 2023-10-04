@@ -1,5 +1,4 @@
 using Application.Commons;
-using Application.Utils;
 using DataAccess;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +28,7 @@ builder.Services.AddDbContext<AppDBContext>(opt => opt.UseSqlServer(config.Conne
 builder.Services.AddJWTConfiguration(config.JwtConfiguration.SecretKey);
 
 // Add DIs
+builder.Services.AddDaoDIs();
 builder.Services.AddRepositoryDIs();
 builder.Services.AddServicesDIs();
 
@@ -79,12 +79,11 @@ void SeedDatabase()
         try
         {
             var context = services.GetRequiredService<AppDBContext>();
-            context.Database.EnsureCreated(); // create database if not exist, add table if not has any
-            DBInitializer.InitializeData(context);
+            context.Database.EnsureCreated(); // create database if not exist, add table if not has any            
         }
         catch (Exception ex)
         {
-            app.Logger.LogError(ex, "An error occurred when seeding the DB.");
+            app.Logger.LogError(ex, "An error occurred when creating the DB.");
         }
     }
 }

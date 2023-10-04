@@ -1,9 +1,9 @@
 ﻿using DataAccess;
 using Domain;
-using Infrastructure.IRepos;
+using Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repos;
+namespace Infrastructure.Repositories;
 
 public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
 {

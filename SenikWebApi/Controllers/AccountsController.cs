@@ -1,7 +1,7 @@
 ﻿using Application.Commons;
 using AutoMapper;
 using Domain;
-using Infrastructure.IRepos;
+using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using SenikWebApi.Models;
 

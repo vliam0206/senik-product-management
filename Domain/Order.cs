@@ -16,5 +16,5 @@ public class Order : BaseEntity
 
     public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     public int? CustomerId { get; set; }
-    public CustomerInfor? CustomerInfor { get; set; }
+    public Account? CustomerInfor { get; set; }
 }

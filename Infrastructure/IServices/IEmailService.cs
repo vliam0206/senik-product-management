@@ -1,4 +1,4 @@
-﻿namespace Application.IServices;
+﻿namespace Infrastructure.IServices;
 
 public interface IEmailService
 {    
