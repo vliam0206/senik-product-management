@@ -61,5 +61,11 @@ public class AccountRepository : IAccountRepository
     }
 
     public async Task UpdatePatchAccountAsync(int accountId, JsonPatchDocument<Account> accountModel)
-        => await _accountDao.PatchUpdateAsync(accountId, accountModel);
+    {
+        if ((await _accountDao.GetByIdAsync(accountId)) == null)
+        {
+            throw new ArgumentException("Account Id not found!");
+        }
+        await _accountDao.PatchUpdateAsync(accountId, accountModel);
+    }
 }
