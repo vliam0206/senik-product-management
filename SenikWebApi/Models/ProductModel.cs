@@ -1,4 +1,6 @@
-﻿namespace SenikWebApi.Models;
+﻿using Domain.Enums;
+
+namespace SenikWebApi.Models;
 
 public class ProductModel
 {
@@ -7,6 +9,6 @@ public class ProductModel
     public double Price { get; set; }
     public int Quantity { get; set; }
     public string? Description { get; set; }
-    public string Status { get; set; } = "Active";
-    public string Category { get; set; } = default!;
+    public ProductStatusEnum Status { get; set; } = 0;
+    public CategoryEnum Category { get; set; } = default!;
 }

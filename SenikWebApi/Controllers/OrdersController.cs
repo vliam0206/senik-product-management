@@ -2,9 +2,11 @@
 using AutoMapper;
 using Domain;
 using Domain.Enums;
+using Infrastructure.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SenikWebApi.Models;
+using System.Globalization;
 
 namespace SenikWebApi.Controllers;
 
@@ -16,14 +18,17 @@ public class OrdersController : ControllerBase
     private readonly IOrderRepository _orderRepository;
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
+    private readonly IEmailService _emailService;
 
     public OrdersController(IOrderRepository orderRepository, 
                                 IMapper mapper,
-                                IProductRepository productRepository)
+                                IProductRepository productRepository,
+                                IEmailService emailService)
     {
         _orderRepository = orderRepository;
         _mapper = mapper;
         _productRepository = productRepository; 
+        _emailService = emailService;
     }
 
     // GET: api/Orders
@@ -122,6 +127,8 @@ public class OrdersController : ControllerBase
             // Save in database
             order.OrderDetails = details;
             await _orderRepository.AddOrderAsync(order);
+            // Make order succeefully, sent email to customer
+            await SendConfirmEmailAsync(order);
         }
         catch (Exception ex)
         {
@@ -191,5 +198,25 @@ public class OrdersController : ControllerBase
         {
             return BadRequest(new { ErrorMessage = ex.Message });
         }
+    }
+    
+    private async Task SendConfirmEmailAsync(Order order)
+    {
+        //Get project's directory and fetch DefaultTemplate content from EmailTemplates
+        string exePath = Environment.CurrentDirectory.ToString();
+        if (exePath.Contains(@"\bin\Debug\net7.0"))
+            exePath = exePath.Remove(exePath.Length - (@"\bin\Debug\net7.0").Length);
+        string FilePath = exePath + @"\EmailTemplates\DefaultTemplate.html";
+        StreamReader streamreader = new StreamReader(FilePath);
+        string mailText = streamreader.ReadToEnd();
+        streamreader.Close();
+        //Replace email informations
+        mailText = mailText.Replace("[CustomerFullName]", order.CustomerName);
+        mailText = mailText.Replace("[Address]", order.Address);
+        mailText = mailText.Replace("[PhoneNumber]", order.PhoneNumber);
+        mailText = mailText.Replace("[CreatedDate]", order.CreationDate.ToString("f"));
+        mailText = mailText.Replace("[Total]", order.TotalMoney.ToString("C0", CultureInfo.GetCultureInfo("vi-VN")));
+        // Send email to customer (send reservation information)
+        await _emailService.SendMailAsync(new List<string> { order.Email }, "Senik - Xác nhận đơn hàng", mailText);
     }
 }
