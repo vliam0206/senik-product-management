@@ -4,6 +4,7 @@ using Infrastructure.Interfaces;
 using SenikWebApi.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace SenikWebApi.Controllers;
 
@@ -65,6 +66,27 @@ public class AccountsController : ControllerBase
         {
             return NotFound(new { ErrorMessage = ex.Message });
         } catch (Exception ex)
+        {
+            return BadRequest(new { ErrorMessage = ex.Message });
+        }
+
+        return NoContent();
+    }
+
+    // PATCH: api/Orders/5    
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> PatchAccount([FromRoute] int id, [FromBody] JsonPatchDocument<Account> model)
+    {
+        try
+        {
+            await _accountRepository.UpdatePatchAccountAsync(id, model);
+
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(new { ErrorMessage = ex.Message });
+        }
+        catch (Exception ex)
         {
             return BadRequest(new { ErrorMessage = ex.Message });
         }

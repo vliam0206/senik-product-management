@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Infrastructure.Daos;
 using Infrastructure.Interfaces;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Infrastructure.Repositories;
 
@@ -58,4 +59,7 @@ public class AccountRepository : IAccountRepository
         }
         await _accountDao.UpdateAsync(account);
     }
+
+    public async Task UpdatePatchAccountAsync(int accountId, JsonPatchDocument<Account> accountModel)
+        => await _accountDao.PatchUpdateAsync(accountId, accountModel);
 }
