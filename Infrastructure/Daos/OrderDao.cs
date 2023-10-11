@@ -16,6 +16,7 @@ public class OrderDao : BaseDao<Order>
         var dbcontext = new AppDBContext();
         return await dbcontext.Orders
                             .Include(x => x.OrderDetails)
+                            .ThenInclude(d => d.Product)
                             .ToListAsync();
     }
 }

@@ -14,13 +14,14 @@ public class MappingProfile : Profile
         CreateMap<Product, ProductModel>().ReverseMap();
         CreateMap<Product, ProductVM>().ReverseMap();
         CreateMap<Product, ProductOrderVM>().ReverseMap();
-        CreateMap<Order, OrderVM>().ReverseMap();
+        CreateMap<Order, OrderVM>()
+            .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.OrderDetails));
         CreateMap<Order, OrderModel>().ReverseMap();
         CreateMap<OrderDetail, OrderDetailModel>().ReverseMap();
         CreateMap<OrderDetail, OrderDetailVM>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Product.Name))
-            .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Product.Price))
+            .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.Product.Price))
             .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Product.Image))
-            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Product.Category));                     
+            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Product.Category));
     }
 }
