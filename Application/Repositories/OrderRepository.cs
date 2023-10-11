@@ -68,6 +68,12 @@ public class OrderRepository : IOrderRepository
     }
 
     public async Task UpdatePatchOrderAsync(int orderId, JsonPatchDocument<Order> orderModel)
-        => await _orderDao.PatchUpdateAsync(orderId, orderModel);
+    {
+        if ( (await _orderDao.GetByIdAsync(orderId)) == null)
+        {
+            throw new ArgumentException("Order Id not found!");
+        }
+        await _orderDao.PatchUpdateAsync(orderId, orderModel);
+    }
 }
 
