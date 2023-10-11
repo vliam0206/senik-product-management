@@ -1,4 +1,6 @@
-﻿namespace SenikWebApi.Models;
+﻿using Domain.Enums;
+
+namespace SenikWebApi.Models;
 
 public class OrderModel
 {
@@ -7,7 +9,7 @@ public class OrderModel
     public string PhoneNumber { get; set; } = default!;
     public string Address { get; set; } = default!;
     public DateTime? ShippedDate { get; set; }
-    public string PaymentMethod { get; set; } = "Momo";
+    public PaymentEnum PaymentMethod { get; set; } = PaymentEnum.COD;
 
     public ICollection<OrderDetailModel> Products { get; set; } = new List<OrderDetailModel>();
 }

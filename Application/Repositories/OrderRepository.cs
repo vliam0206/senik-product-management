@@ -2,6 +2,7 @@
 using Domain;
 using Domain.Enums;
 using Infrastructure.Daos;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Application.Repositories;
 
@@ -65,5 +66,8 @@ public class OrderRepository : IOrderRepository
         var categories = Enum.GetNames(typeof(OrderStatusEnum));
         return categories.ToList();
     }
+
+    public async Task UpdatePatchOrderAsync(int orderId, JsonPatchDocument<Order> orderModel)
+        => await _orderDao.PatchUpdateAsync(orderId, orderModel);
 }
 
