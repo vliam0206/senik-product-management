@@ -4,6 +4,7 @@ using Domain;
 using Domain.Enums;
 using Infrastructure.IServices;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using SenikWebApi.Models;
 using System.Globalization;
@@ -76,6 +77,28 @@ public class OrdersController : ControllerBase
             var order = _mapper.Map<Order>(model);
             order.Id = id;
             await _orderRepository.UpdateOrderAsync(order);
+
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(new { ErrorMessage = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { ErrorMessage = ex.Message });
+        }
+
+        return NoContent();
+    }
+
+    // PUT: api/Orders/5    
+    [HttpPatch("{id}")]
+    [Authorize(Roles = "Staff")]
+    public async Task<IActionResult> PatchOrder([FromRoute] int id, [FromBody] JsonPatchDocument<Order> model)
+    {
+        try
+        {
+            await _orderRepository.UpdatePatchOrderAsync(id, model);
 
         }
         catch (ArgumentException ex)

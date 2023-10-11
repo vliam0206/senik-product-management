@@ -2,7 +2,7 @@
 
 public enum PaymentEnum
 {
-    Momo = 0,
-    COD = 1,
-    Card = 2
+    COD = 0,
+    Card = 1,
+    ZaloPay = 2
 }

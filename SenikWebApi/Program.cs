@@ -10,8 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddJsonOptions(opt
-    => opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.AddControllers().AddNewtonsoftJson();
+//builder.Services.AddControllers().AddJsonOptions(opt
+//    => opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 // Add OData
 builder.Services.AddODataConfig();
 builder.Services.AddEndpointsApiExplorer();
