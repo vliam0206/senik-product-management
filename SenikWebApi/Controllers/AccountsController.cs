@@ -5,6 +5,7 @@ using SenikWebApi.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
+using Application.Utils;
 
 namespace SenikWebApi.Controllers;
 
@@ -59,6 +60,7 @@ public class AccountsController : ControllerBase
         try
         {
             var account = _mapper.Map<Account>(model);
+            account.Password = account.Password.Hash();
             account.Id = id;
             await _accountRepository.UpdateAccountAsync(account);
 
@@ -66,27 +68,6 @@ public class AccountsController : ControllerBase
         {
             return NotFound(new { ErrorMessage = ex.Message });
         } catch (Exception ex)
-        {
-            return BadRequest(new { ErrorMessage = ex.Message });
-        }
-
-        return NoContent();
-    }
-
-    // PATCH: api/Orders/5    
-    [HttpPatch("{id}")]
-    public async Task<IActionResult> PatchAccount([FromRoute] int id, [FromBody] JsonPatchDocument<Account> model)
-    {
-        try
-        {
-            await _accountRepository.UpdatePatchAccountAsync(id, model);
-
-        }
-        catch (ArgumentException ex)
-        {
-            return NotFound(new { ErrorMessage = ex.Message });
-        }
-        catch (Exception ex)
         {
             return BadRequest(new { ErrorMessage = ex.Message });
         }
@@ -102,6 +83,7 @@ public class AccountsController : ControllerBase
         var account = _mapper.Map<Account>(model);
         try
         {
+            account.Password = account.Password.Hash();
             await _accountRepository.AddAccountAsync(account);
         }
         catch (Exception ex)
