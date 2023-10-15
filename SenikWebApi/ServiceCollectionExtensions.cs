@@ -69,16 +69,5 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IClaimService, ClaimService>();
         services.AddSingleton<IEmailService, EmailService>();
         return services;
-    }
-    
-    public static IServiceCollection AddODataConfig(this IServiceCollection services)
-    {
-        var modelbuilder = new ODataConventionModelBuilder();
-        modelbuilder.EntitySet<Account>("Accounts");
-
-        services.AddControllers().AddOData(opt
-            => opt.EnableQueryFeatures()
-                  .AddRouteComponents("odata", modelbuilder.GetEdmModel()));
-        return services;
-    }
+    }    
 }

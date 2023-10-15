@@ -1,35 +1,26 @@
-using Application.Commons;
-using DataAccess;
 using Infrastructure;
-using Microsoft.EntityFrameworkCore;
+using Infrastructure.Commons;
 using SenikWebApi;
 using SenikWebApi.AutoMapper;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers().AddNewtonsoftJson();
-//builder.Services.AddControllers().AddJsonOptions(opt
-//    => opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-// Add OData
-builder.Services.AddODataConfig();
 builder.Services.AddEndpointsApiExplorer();
+
 // Add Swagger configs
 builder.Services.AddSwaggerGenConfiguration();
 builder.Services.AddRouting(opt => opt.LowercaseUrls = true);
 
 // Bind AppConfiguration from configuration
-var config = new AppConfiguration();
+var config = builder.Configuration.Get<AppConfiguration>();
 builder.Configuration.Bind(config);
-builder.Services.AddSingleton(config);
-
-// Add DB Context for seeding Database
-builder.Services.AddDbContext<AppDBContext>(opt => opt.UseSqlServer(config.ConnectionStrings.DefaultDB));
+builder.Services.AddSingleton(config!);
 
 // Add jwt configuration
-builder.Services.AddJWTConfiguration(config.JwtConfiguration.SecretKey);
+builder.Services.AddJWTConfiguration(config!.JwtConfiguration.SecretKey);
 
 // Add DIs
 builder.Services.AddDaoDIs();
@@ -64,32 +55,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Initialize data for DB
-SeedDatabase();
+app.UseCors(); // Use cors
 
-app.UseCors();
-
-app.UseAuthentication();
+app.UseAuthentication(); // Use authentication
 
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
-
-void SeedDatabase()
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        var services = scope.ServiceProvider;
-        try
-        {
-            var context = services.GetRequiredService<AppDBContext>();
-            context.Database.EnsureCreated(); // create database if not exist, add table if not has any            
-        }
-        catch (Exception ex)
-        {
-            app.Logger.LogError(ex, "An error occurred when creating the DB.");
-        }
-    }
-}
