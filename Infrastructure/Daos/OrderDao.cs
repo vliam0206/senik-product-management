@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using Domain;
+using Infrastructure.Commons;
 using Infrastructure.IServices;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
@@ -8,13 +9,16 @@ namespace Infrastructure.Daos;
 
 public class OrderDao : BaseDao<Order>
 {
-    public OrderDao(IClaimService claimService) : base(claimService)
+    private readonly AppConfiguration _config;
+    public OrderDao(IClaimService claimService,
+            AppConfiguration configuration) : base(claimService, configuration)
     {
+        _config = configuration;
     }
 
     public override async Task<List<Order>> GetAllAsync()
     {
-        var dbcontext = new AppDBContext();
+        var dbcontext = new AppDBContext(_config);
         return await dbcontext.Orders
                             .Include(x => x.OrderDetails)
                             .ThenInclude(d => d.Product)
@@ -25,7 +29,7 @@ public class OrderDao : BaseDao<Order>
     {
         try
         {
-            var dbcontext = new AppDBContext();
+            var dbcontext = new AppDBContext(_config);
             var order = await dbcontext.Orders.FindAsync(orderId);
             if (order != null)
             {
