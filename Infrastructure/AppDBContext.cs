@@ -24,11 +24,14 @@ public class AppDBContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        if (!optionsBuilder.IsConfigured)
-        {
-            // Use default local sqlserver
-            optionsBuilder.UseSqlServer(_config.ConnectionStrings.DefaultDB);
-        }
+        // Use local sqlserver
+        //optionsBuilder.UseSqlServer(_config.ConnectionStrings.DefaultDB);
+
+        // Use local postgresql
+        optionsBuilder.UseNpgsql(_config.ConnectionStrings.LocalPostgresDB);
+
+        // Use heroku postgressql    
+        //optionsBuilder.UseNpgsql(_config.ConnectionStrings.HerokuPostgres);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
