@@ -1,7 +1,7 @@
-﻿using Application.Commons;
-using Application.Utils;
+﻿using Application.Utils;
 using AutoMapper;
 using Domain;
+using Infrastructure.Commons;
 using Infrastructure.Interfaces;
 using Infrastructure.IServices;
 using Microsoft.AspNetCore.Authorization;
