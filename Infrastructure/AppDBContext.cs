@@ -28,10 +28,10 @@ public class AppDBContext : DbContext
         //optionsBuilder.UseSqlServer(_config.ConnectionStrings.DefaultDB);
 
         // Use local postgresql
-        optionsBuilder.UseNpgsql(_config.ConnectionStrings.LocalPostgresDB);
+        //optionsBuilder.UseNpgsql(_config.ConnectionStrings.LocalPostgresDB);
 
         // Use heroku postgressql    
-        //optionsBuilder.UseNpgsql(_config.ConnectionStrings.HerokuPostgres);
+        optionsBuilder.UseNpgsql(_config.ConnectionStrings.HerokuPostgres);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
