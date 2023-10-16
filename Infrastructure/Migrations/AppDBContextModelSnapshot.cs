@@ -3,8 +3,8 @@ using System;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -17,85 +17,85 @@ namespace Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("ProductVersion", "7.0.12")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Domain.Account", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int?>("CreatedBy")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getutcdate()");
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<int?>("DeletedBy")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("DeletionDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
+                        .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
                     b.Property<DateTime?>("ModificationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getutcdate()");
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<int?>("ModifiedBy")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Role")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Accounts", (string)null);
+                    b.ToTable("Accounts");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             Address = "123 Main St, Anytown, USA",
-                            CreationDate = new DateTime(2023, 10, 5, 3, 39, 22, 637, DateTimeKind.Local).AddTicks(8397),
+                            CreationDate = new DateTime(2023, 10, 16, 3, 26, 8, 863, DateTimeKind.Local).AddTicks(2641),
                             Email = "john.doe@example.com",
                             FullName = "John Doe",
                             IsDeleted = false,
-                            ModificationDate = new DateTime(2023, 10, 5, 3, 39, 22, 637, DateTimeKind.Local).AddTicks(8408),
-                            Password = "pIbiq9ROsk153rS9d4IeXgUd3hI7s6Y6yW5ZkevRwsZt3YhC",
+                            ModificationDate = new DateTime(2023, 10, 16, 3, 26, 8, 863, DateTimeKind.Local).AddTicks(2655),
+                            Password = "ETlFRU2FmQtp+wXSQk1rQaRsQtA2IdyLvBd1NDScmxelN3Oy",
                             PhoneNumber = "123-456-7890",
                             Role = 1
                         },
@@ -103,46 +103,46 @@ namespace Infrastructure.Migrations
                         {
                             Id = 2,
                             Address = "456 Elm St, Anycity, USA",
-                            CreationDate = new DateTime(2023, 10, 5, 3, 39, 22, 641, DateTimeKind.Local).AddTicks(1419),
+                            CreationDate = new DateTime(2023, 10, 16, 3, 26, 8, 866, DateTimeKind.Local).AddTicks(7365),
                             Email = "alice.smith@example.com",
                             FullName = "Alice Smith",
                             IsDeleted = false,
-                            ModificationDate = new DateTime(2023, 10, 5, 3, 39, 22, 641, DateTimeKind.Local).AddTicks(1428),
-                            Password = "wT399xovW/5QZpQYDAMc+zolN2lVHqrwl3UKK48vC67wxT5F",
+                            ModificationDate = new DateTime(2023, 10, 16, 3, 26, 8, 866, DateTimeKind.Local).AddTicks(7370),
+                            Password = "oaLJu/C5yZDfpyI3PijhkZ2VArZKYtEtyZ7LFgQq0JfypM+d",
                             PhoneNumber = "987-654-3210",
                             Role = 1
                         },
                         new
                         {
                             Id = 3,
-                            CreationDate = new DateTime(2023, 10, 5, 3, 39, 22, 644, DateTimeKind.Local).AddTicks(2735),
+                            CreationDate = new DateTime(2023, 10, 16, 3, 26, 8, 869, DateTimeKind.Local).AddTicks(8559),
                             Email = "lam@senik.com",
                             FullName = "Staff Lam",
                             IsDeleted = false,
-                            ModificationDate = new DateTime(2023, 10, 5, 3, 39, 22, 644, DateTimeKind.Local).AddTicks(2736),
-                            Password = "Va+gFez4j1r7pIbfAwOuY0Tq0IivQPrLXk8zwmqNCceVsqHY",
+                            ModificationDate = new DateTime(2023, 10, 16, 3, 26, 8, 869, DateTimeKind.Local).AddTicks(8560),
+                            Password = "swk3kNlcBRvhu4Zy0zTqUX7BZafUO0Wa8CgxjsLrjYiHELAw",
                             Role = 0
                         },
                         new
                         {
                             Id = 4,
-                            CreationDate = new DateTime(2023, 10, 5, 3, 39, 22, 647, DateTimeKind.Local).AddTicks(4383),
+                            CreationDate = new DateTime(2023, 10, 16, 3, 26, 8, 873, DateTimeKind.Local).AddTicks(7277),
                             Email = "hoanganh@senik.com",
                             FullName = "Staff Hoàng Anh",
                             IsDeleted = false,
-                            ModificationDate = new DateTime(2023, 10, 5, 3, 39, 22, 647, DateTimeKind.Local).AddTicks(4383),
-                            Password = "Mg8FmD61VwMXmjyIamvTkUaHNLj59hUatBP3/o7c6BqcQfQP",
+                            ModificationDate = new DateTime(2023, 10, 16, 3, 26, 8, 873, DateTimeKind.Local).AddTicks(7306),
+                            Password = "1jRgnRqtz9VVTf/QSjfK6G79ceG/vyKLjqdYqBewviQ7FknN",
                             Role = 0
                         },
                         new
                         {
                             Id = 5,
-                            CreationDate = new DateTime(2023, 10, 5, 3, 39, 22, 650, DateTimeKind.Local).AddTicks(6055),
+                            CreationDate = new DateTime(2023, 10, 16, 3, 26, 8, 878, DateTimeKind.Local).AddTicks(2351),
                             Email = "thong@senik.com",
                             FullName = "Staff Thông",
                             IsDeleted = false,
-                            ModificationDate = new DateTime(2023, 10, 5, 3, 39, 22, 650, DateTimeKind.Local).AddTicks(6055),
-                            Password = "tPPJWChEAW18FexXKDZMVLBZ4ZkjzmbQIF9BBnX38Kk8M8UT",
+                            ModificationDate = new DateTime(2023, 10, 16, 3, 26, 8, 878, DateTimeKind.Local).AddTicks(2354),
+                            Password = "GSBoZzaHNgqKkLK/50ki6DgTLX5zcCMlCtMsn59RshazYJJb",
                             Role = 0
                         });
                 });
@@ -151,129 +151,129 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.None);
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int?>("CreatedBy")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getutcdate()");
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int?>("DeletedBy")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("DeletionDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
+                        .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
                     b.Property<DateTime?>("ModificationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getutcdate()");
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<int?>("ModifiedBy")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("PaymentMethod")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("ShippedDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasDefaultValue(0);
 
                     b.Property<double>("TotalMoney")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("float")
+                        .HasColumnType("double precision")
                         .HasDefaultValue(0.0);
 
                     b.Property<int>("TotalQuantity")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasDefaultValue(0);
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Domain.OrderDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("CreatedBy")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getutcdate()");
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<int?>("DeletedBy")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("DeletionDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
+                        .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
                     b.Property<DateTime?>("ModificationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getutcdate()");
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<int?>("ModifiedBy")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("OrderId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<double>("UnitPrice")
-                        .HasColumnType("float");
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
@@ -281,82 +281,82 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetails", (string)null);
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("Domain.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Category")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("CreatedBy")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getutcdate()");
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<int?>("DeletedBy")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("DeletionDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
+                        .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
                     b.Property<DateTime?>("ModificationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getutcdate()");
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<int?>("ModifiedBy")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<double>("Price")
-                        .HasColumnType("float");
+                        .HasColumnType("double precision");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasDefaultValue(0);
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             Category = 1,
-                            CreationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3781),
+                            CreationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8836),
                             Description = "A stunning succulent that glows like the moonlight.",
                             Image = "https://th.bing.com/th/id/OIP.xMeFmNxgcpdd5sXMfXIi-gHaE7?pid=ImgDet&w=800&h=533&rs=1",
                             IsDeleted = false,
-                            ModificationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3792),
+                            ModificationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8854),
                             Name = "Mystical Moonlight Succulent",
                             Price = 97000.0,
                             Quantity = 50,
@@ -366,11 +366,11 @@ namespace Infrastructure.Migrations
                         {
                             Id = 2,
                             Category = 0,
-                            CreationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3794),
+                            CreationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8856),
                             Description = "An illusionary cactus that appears to shimmer in the desert sun.",
                             Image = "https://th.bing.com/th/id/OIP.hNc2N9iLljV8VMWx_BHJ7QEDDw?pid=ImgDet&rs=1",
                             IsDeleted = false,
-                            ModificationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3795),
+                            ModificationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8856),
                             Name = "Desert Mirage Cactus",
                             Price = 12000.0,
                             Quantity = 30,
@@ -380,11 +380,11 @@ namespace Infrastructure.Migrations
                         {
                             Id = 3,
                             Category = 3,
-                            CreationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3796),
+                            CreationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8857),
                             Description = "Create a magical atmosphere with these enchanting fairy lights",
                             Image = "https://th.bing.com/th/id/OIP.2Kpj8zaosbOUIfX0AmSlMgHaHa?pid=ImgDet&rs=1",
                             IsDeleted = false,
-                            ModificationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3797),
+                            ModificationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8858),
                             Name = "Enchanted Forest Fairy Lights",
                             Price = 75000.0,
                             Quantity = 20,
@@ -394,11 +394,11 @@ namespace Infrastructure.Migrations
                         {
                             Id = 4,
                             Category = 1,
-                            CreationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3798),
+                            CreationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8859),
                             Description = "A succulent that resembles the fiery scales of a dragon.",
                             Image = "https://th.bing.com/th/id/OIP.YPEnYKS5Od0Hk2c5x6MH4QHaE8?pid=ImgDet&rs=1",
                             IsDeleted = false,
-                            ModificationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3798),
+                            ModificationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8860),
                             Name = "Fire Dragon Succulent",
                             Price = 86000.0,
                             Quantity = 45,
@@ -408,11 +408,11 @@ namespace Infrastructure.Migrations
                         {
                             Id = 5,
                             Category = 2,
-                            CreationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3800),
+                            CreationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8861),
                             Description = "A beautifully crafted glass vase inspired by the ocean.",
                             Image = "https://i.pinimg.com/originals/ce/ef/a2/ceefa2a3524afedbe6d99fa19bacd437.jpg",
                             IsDeleted = false,
-                            ModificationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3800),
+                            ModificationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8862),
                             Name = "Ocean Breeze Glass Vase",
                             Price = 55000.0,
                             Quantity = 15,
@@ -422,11 +422,11 @@ namespace Infrastructure.Migrations
                         {
                             Id = 6,
                             Category = 3,
-                            CreationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3802),
+                            CreationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8863),
                             Description = "A cactus that emits a neon-like glow in the dark.",
                             Image = "https://th.bing.com/th/id/R.b8d267e5efaf29425e5b7747cc6fd413?rik=Dj%2fXfb2WHH53wg&riu=http%3a%2f%2fstatic1.squarespace.com%2fstatic%2f51a79166e4b01ba7ba19a0f6%2ft%2f56f9e1101330bacc0f95b928%2f1459216677818%2f&ehk=IAXClID1p4n%2f%2bopYz6b6PwqITx0R9RveUHC1EjxJLFc%3d&risl=&pid=ImgRaw&r=0",
                             IsDeleted = false,
-                            ModificationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3802),
+                            ModificationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8863),
                             Name = "Neon Glow Cactus",
                             Price = 11000.0,
                             Quantity = 28,
@@ -436,11 +436,11 @@ namespace Infrastructure.Migrations
                         {
                             Id = 7,
                             Category = 1,
-                            CreationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3804),
+                            CreationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8865),
                             Description = "Create your own starry night with this succulent garden.",
                             Image = "https://i.pinimg.com/736x/37/2f/9f/372f9fa78e0cdf9b0141bce4dfc7dd23.jpg",
                             IsDeleted = false,
-                            ModificationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3804),
+                            ModificationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8865),
                             Name = "Starry Night Succulent Garden",
                             Price = 275000.0,
                             Quantity = 40,
@@ -450,11 +450,11 @@ namespace Infrastructure.Migrations
                         {
                             Id = 8,
                             Category = 3,
-                            CreationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3806),
+                            CreationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8867),
                             Description = "A crystal-clear globe that adds elegance to your decor.",
                             Image = "https://th.bing.com/th/id/OIP.sJ0mfVF7ptta-BZmzhAcjgAAAA?pid=ImgDet&rs=1",
                             IsDeleted = false,
-                            ModificationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3806),
+                            ModificationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8867),
                             Name = "Crystal Clear Decorative Globe",
                             Price = 55000.0,
                             Quantity = 22,
@@ -464,11 +464,11 @@ namespace Infrastructure.Migrations
                         {
                             Id = 9,
                             Category = 2,
-                            CreationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3807),
+                            CreationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8869),
                             Description = "An elegantly designed crystal vase fit for royalty.",
                             Image = "https://a.1stdibscdn.com/archivesE/upload/7977/26_15/2493352/2493352_l.jpeg",
                             IsDeleted = false,
-                            ModificationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3808),
+                            ModificationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8869),
                             Name = "Royal Elegance Crystal Vase",
                             Price = 65000.0,
                             Quantity = 18,
@@ -478,11 +478,11 @@ namespace Infrastructure.Migrations
                         {
                             Id = 10,
                             Category = 0,
-                            CreationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3809),
+                            CreationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8871),
                             Description = "A rugged cactus reminiscent of the wild west landscapes.",
                             Image = "https://th.bing.com/th/id/OIP.ez7XcMIuvhJd8LERpka5CwHaE7?pid=ImgDet&rs=1",
                             IsDeleted = false,
-                            ModificationDate = new DateTime(2023, 10, 5, 3, 39, 22, 655, DateTimeKind.Local).AddTicks(3810),
+                            ModificationDate = new DateTime(2023, 10, 16, 3, 26, 8, 882, DateTimeKind.Local).AddTicks(8871),
                             Name = "Wild West Prickly Pear Cactus",
                             Price = 75000.0,
                             Quantity = 35,
