@@ -11,6 +11,8 @@ public class AppConfiguration
 public class ConnectionStrings
 {
     public string DefaultDB { get; set; } = default!;
+    public string HerokuPostgres { get; set; } = default!;
+    public string LocalPostgresDB { get; set; } = default!;
 }
 
 public class JwtConfiguration

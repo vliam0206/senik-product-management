@@ -1,5 +1,7 @@
+using DataAccess;
 using Infrastructure;
 using Infrastructure.Commons;
+using Microsoft.EntityFrameworkCore;
 using SenikWebApi;
 using SenikWebApi.AutoMapper;
 
@@ -47,11 +49,8 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
