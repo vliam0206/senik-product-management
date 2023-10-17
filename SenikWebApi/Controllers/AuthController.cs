@@ -40,7 +40,7 @@ public class AuthController : ControllerBase
             }
             else
             {
-                var token = account.GenerateJsonWebToken(_config.JwtConfiguration.SecretKey, DateTime.Now);
+                var token = account.GenerateJsonWebToken(_config.JwtConfiguration.SecretKey, DateTime.UtcNow);
                 return Ok(new { Token = token});
             }
         }

@@ -48,6 +48,9 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Config for UTC Datetime of Postgresql
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 // Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI();

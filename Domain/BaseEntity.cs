@@ -9,9 +9,9 @@ public class BaseEntity
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [JsonPropertyOrder(-1)]
     public int Id { get; set; }
-    public DateTime CreationDate { get; set; } = DateTime.Now;
+    public DateTime CreationDate { get; set; } = DateTime.UtcNow;
     public int? CreatedBy { get; set; }
-    public DateTime? ModificationDate { get; set; } = DateTime.Now;
+    public DateTime? ModificationDate { get; set; } = DateTime.UtcNow;
     public int? ModifiedBy { get; set; }
     public DateTime? DeletionDate { get; set; }
     public bool IsDeleted { get; set; } = false;
