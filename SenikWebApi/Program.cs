@@ -1,7 +1,5 @@
-using DataAccess;
 using Infrastructure;
 using Infrastructure.Commons;
-using Microsoft.EntityFrameworkCore;
 using SenikWebApi;
 using SenikWebApi.AutoMapper;
 
@@ -47,6 +45,9 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// Config for UTC Datetime of Postgresql
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
