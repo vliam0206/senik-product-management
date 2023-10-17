@@ -49,7 +49,7 @@ public class BaseDao<T> where T : BaseEntity
 
     public async Task UpdateAsync(T entity)
     {
-        entity.ModificationDate = DateTime.Now;
+        entity.ModificationDate = DateTime.UtcNow;
         entity.ModifiedBy = _claimService.GetCurrentUserId;
 
         var dbcontext = new AppDBContext(_config);
@@ -67,7 +67,7 @@ public class BaseDao<T> where T : BaseEntity
     public async Task SoftDeleteAsync(T entity)
     {
         entity.IsDeleted = true;
-        entity.DeletionDate = DateTime.Now;
+        entity.DeletionDate = DateTime.UtcNow;
         entity.DeletedBy = _claimService.GetCurrentUserId;
 
         var dbcontext = new AppDBContext(_config);
