@@ -225,11 +225,15 @@ public class OrdersController : ControllerBase
     
     private async Task SendConfirmEmailAsync(Order order)
     {
-        //Get project's directory and fetch DefaultTemplate content from EmailTemplates
-        string exePath = Environment.CurrentDirectory.ToString();
-        if (exePath.Contains(@"\bin\Debug\net7.0"))
-            exePath = exePath.Remove(exePath.Length - (@"\bin\Debug\net7.0").Length);
-        string FilePath = exePath + @"\EmailTemplates\DefaultTemplate.html";
+        ////file path in localhost
+        //string exePath = Environment.CurrentDirectory.ToString();
+        //if (exePath.Contains(@"\bin\Debug\net7.0"))
+        //    exePath = exePath.Remove(exePath.Length - (@"\bin\Debug\net7.0").Length);
+        //string FilePath = exePath + @"\EmailTemplates\DefaultTemplate.html";
+
+        // file path when deploy to heroku
+        string FilePath = "/app/SenikWebApi/EmailTemplates/DefaultTemplate.html";
+        
         StreamReader streamreader = new StreamReader(FilePath);
         string mailText = streamreader.ReadToEnd();
         streamreader.Close();
