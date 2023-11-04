@@ -50,6 +50,16 @@ public class AccountRepository : IAccountRepository
         return await _accountDao.GetAllAsync();
     }
 
+    public async Task HardDeleteAccountAsync(int accountId)
+    {
+        var acc = await GetAccountByIdAsync(accountId);
+        if (acc == null)
+        {
+            throw new ArgumentException($"Account with Id {accountId} does not exist.");
+        }
+        await _accountDao.DeleteAsync(acc);
+    }
+
     public async Task UpdateAccountAsync(Account account)
     {
         var acc = await GetAccountByIdAsync(account.Id);

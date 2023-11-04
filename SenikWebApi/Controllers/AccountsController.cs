@@ -115,4 +115,26 @@ public class AccountsController : ControllerBase
 
         return NoContent();
     }
+
+    // DELETE: api/Accounts/harddelete/5
+    [HttpDelete("harddelete/{id}")]
+    [Authorize(Roles = "Staff")]
+    public async Task<IActionResult> HardDeleteAccount(int id)
+    {
+        try
+        {
+            await _accountRepository.HardDeleteAccountAsync(id);
+
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(new { ErrorMessage = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { ErrorMessage = ex.Message });
+        }
+
+        return NoContent();
+    }
 }
