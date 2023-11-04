@@ -1,6 +1,7 @@
 ﻿using Application.IRepositories;
 using AutoMapper;
 using Domain;
+using Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -34,7 +35,10 @@ public class ProductsController : ControllerBase
             } else
             {
                 products = await _productRepository.GetAllProductsAsync();
-            }             
+            }
+
+            products = products.OrderByDescending(x => x.CreationDate).ToList();
+
             return Ok(_mapper.Map<List<ProductVM>>(products));
         }
         catch (Exception ex)
@@ -158,4 +162,162 @@ public class ProductsController : ControllerBase
             return BadRequest(new { ErrorMessage = ex.Message });
         }
     }
+
+    // DELETE: api/Products/harddelete/5
+    [HttpDelete("harddelete/{id}")]
+    [Authorize(Roles = "Staff")]
+    public async Task<IActionResult> HardDeleteProduct(int id)
+    {
+        try
+        {
+            await _productRepository.HardDeleteProductAsync(id);
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(new { ErrorMessage = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { ErrorMessage = ex.Message });
+        }
+
+        return NoContent();
+    }
+
+    // GET: api/Products/Cactus
+    [HttpGet("cactus")]
+    public async Task<ActionResult<IEnumerable<ProductVM>>> GetCactusProducts([FromQuery] string? name)
+    {
+        try
+        {
+            var products = new List<Product>();
+            if (!name.IsNullOrEmpty())
+            {
+                products = await _productRepository.GetProductByNameAsync(name!);
+            }
+            else
+            {
+                products = await _productRepository.GetAllProductsAsync();
+            }
+
+            products = products.Where(x => x.Category == CategoryEnum.Cactus)
+                       .OrderByDescending(x => x.CreationDate).ToList();
+
+            return Ok(_mapper.Map<List<ProductVM>>(products));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { ErrorMessage = ex.Message });
+        }
+    }
+
+    // GET: api/Products/Succulent
+    [HttpGet("succulent")]
+    public async Task<ActionResult<IEnumerable<ProductVM>>> GetSucculentProducts([FromQuery] string? name)
+    {
+        try
+        {
+            var products = new List<Product>();
+            if (!name.IsNullOrEmpty())
+            {
+                products = await _productRepository.GetProductByNameAsync(name!);
+            }
+            else
+            {
+                products = await _productRepository.GetAllProductsAsync();
+            }
+
+            products = products.Where(x => x.Category == CategoryEnum.Succulent)
+                       .OrderByDescending(x => x.CreationDate).ToList();
+
+            return Ok(_mapper.Map<List<ProductVM>>(products));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { ErrorMessage = ex.Message });
+        }
+    }
+
+    // GET: api/Products/vase
+    [HttpGet("vase")]
+    public async Task<ActionResult<IEnumerable<ProductVM>>> GetVaseProducts([FromQuery] string? name)
+    {
+        try
+        {
+            var products = new List<Product>();
+            if (!name.IsNullOrEmpty())
+            {
+                products = await _productRepository.GetProductByNameAsync(name!);
+            }
+            else
+            {
+                products = await _productRepository.GetAllProductsAsync();
+            }
+
+            products = products.Where(x => x.Category == CategoryEnum.Vase)
+                       .OrderByDescending(x => x.CreationDate).ToList();
+
+            return Ok(_mapper.Map<List<ProductVM>>(products));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { ErrorMessage = ex.Message });
+        }
+    }
+
+    // GET: api/Products/decoration
+    [HttpGet("decoration")]
+    public async Task<ActionResult<IEnumerable<ProductVM>>> GetDecorationProducts([FromQuery] string? name)
+    {
+        try
+        {
+            var products = new List<Product>();
+            if (!name.IsNullOrEmpty())
+            {
+                products = await _productRepository.GetProductByNameAsync(name!);
+            }
+            else
+            {
+                products = await _productRepository.GetAllProductsAsync();
+            }
+
+            products = products.Where(x => x.Category == CategoryEnum.Decoration)
+                       .OrderByDescending(x => x.CreationDate).ToList();
+
+            return Ok(_mapper.Map<List<ProductVM>>(products));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { ErrorMessage = ex.Message });
+        }
+    }
+
+    // GET: api/Products/plant
+    [HttpGet("plant")]
+    public async Task<ActionResult<IEnumerable<ProductVM>>> GetPlantProducts([FromQuery] string? name)
+    {
+        try
+        {
+            var products = new List<Product>();
+            if (!name.IsNullOrEmpty())
+            {
+                products = await _productRepository.GetProductByNameAsync(name!);
+            }
+            else
+            {
+                products = await _productRepository.GetAllProductsAsync();
+            }
+
+            products = products.Where(x => x.Category == CategoryEnum.Succulent 
+                                        || x.Category == CategoryEnum.Cactus)
+                       .OrderByDescending(x => x.CreationDate).ToList();
+
+            return Ok(_mapper.Map<List<ProductVM>>(products));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { ErrorMessage = ex.Message });
+        }
+    }
+
 }

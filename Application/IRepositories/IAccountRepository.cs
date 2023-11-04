@@ -12,4 +12,5 @@ public interface IAccountRepository
     Task UpdateAccountAsync(Account account);
     Task UpdatePatchAccountAsync(int accountId, JsonPatchDocument<Account> accountModel);
     Task DeleteAccountAsync(int accountId);
+    Task HardDeleteAccountAsync(int accountId);
 }

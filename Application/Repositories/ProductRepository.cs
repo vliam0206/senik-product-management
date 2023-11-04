@@ -92,5 +92,15 @@ public class ProductRepository : IProductRepository
         var status = Enum.GetNames(typeof(ProductStatusEnum));
         return status.ToList();
     }
+
+    public async Task HardDeleteProductAsync(int productId)
+    {
+        var product = await GetProductByIdAsync(productId);
+        if (product == null)
+        {
+            throw new ArgumentException($"Product with Id {productId} does not exist.");
+        }
+        await _productDao.DeleteAsync(product);
+    }
 }
 

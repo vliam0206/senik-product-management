@@ -40,6 +40,7 @@ public class OrdersController : ControllerBase
         try
         {
             var orders = await _orderRepository.GetAllOrdersAsync();
+            orders = orders.OrderByDescending(x => x.CreationDate).ToList();
             return Ok(_mapper.Map<List<OrderVM>>(orders));
         }
         catch (Exception ex)
