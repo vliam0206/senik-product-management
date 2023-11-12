@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain;
+using Newtonsoft.Json;
 using SenikWebApi.Models;
 
 namespace SenikWebApi.AutoMapper;
@@ -23,5 +24,16 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.Product.Price))
             .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Product.Image))
             .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Product.Category));
+
+        // map order - order report vm
+        CreateMap<Order, OrderReportVM>()
+    .ForMember(dest => dest.Items, opt => opt.MapFrom(src =>
+        JsonConvert.SerializeObject(src.OrderDetails.Select(od => new
+        {
+            ProductName = od.Product.Name, // Replace with actual property name
+            UnitPrice = od.UnitPrice,
+            Quantity = od.Quantity,       // Replace with actual property name
+            // Add other properties as needed
+        }))));
     }
 }
