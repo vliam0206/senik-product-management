@@ -7,7 +7,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using SenikWebApi.Models;
+using System.ComponentModel;
 using System.Globalization;
+using OfficeOpenXml;
+using OfficeOpenXml.Table;
 
 namespace SenikWebApi.Controllers;
 
@@ -184,7 +187,7 @@ public class OrdersController : ControllerBase
         return NoContent();
     }
 
-    // GET: api/products/payments
+    // GET: api/Orders/payments
     [HttpGet("payments")]
     public ActionResult<IEnumerable<CategoryVM>> GetPaymentMethods()
     {
@@ -204,7 +207,7 @@ public class OrdersController : ControllerBase
         }
     }
 
-    // GET: api/products/status
+    // GET: api/Orders/status
     [HttpGet("status")]
     public ActionResult<IEnumerable<CategoryVM>> GetProductStatus()
     {
@@ -246,5 +249,35 @@ public class OrdersController : ControllerBase
         mailText = mailText.Replace("[Total]", order.TotalMoney.ToString("C0", CultureInfo.GetCultureInfo("vi-VN")));
         // Send email to customer (send reservation information)
         await _emailService.SendMailAsync(new List<string> { order.Email }, "Senik - Xác nhận đơn hàng", mailText);
+    }
+
+    // GET: api/Orders/ExportExcel
+    [HttpGet("ExportExcel")]
+    [Authorize(Roles = "Staff")]
+    public async Task<IActionResult> ExportExcel(CancellationToken cancellationToken)
+    {
+        // query data from database  
+        await Task.Yield();
+        var orders = (await _orderRepository.GetAllOrdersAsync())
+                        .Where(x => x.IsDeleted == false);
+
+        var dataList = _mapper.Map<List<OrderReportVM>>(orders);
+
+        var stream = new MemoryStream();
+
+        // If you use EPPlus in a noncommercial context
+        // according to the Polyform Noncommercial license:
+        ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+        using (var package = new ExcelPackage(stream))
+        {
+            var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+            workSheet.Cells.LoadFromCollection(dataList, true);
+            package.Save();
+        }
+        stream.Position = 0;
+        string excelName = $"Senik-sales-report-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.xlsx";
+
+        //return File(stream, "application/octet-stream", excelName);  
+        return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
     }
 }

@@ -11,4 +11,5 @@ public class ProductModel
     public string? Description { get; set; }
     public ProductStatusEnum Status { get; set; } = 0;
     public CategoryEnum Category { get; set; } = default!;
+    public bool IsDeleted { get; set; } = false;
 }

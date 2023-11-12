@@ -32,6 +32,10 @@ public class OrderRepository : IOrderRepository
         {
             throw new ArgumentException($"Order with Id {orderId} does not exist.");
         }
+        if (order.Status == OrderStatusEnum.Success || order.Status == OrderStatusEnum.Confirmed)
+        {
+            throw new Exception("You can not delete paid order. (status: success, confirmed)");
+        }
         await _orderDao.SoftDeleteAsync(order);
     }
 
