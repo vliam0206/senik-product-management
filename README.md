@@ -50,5 +50,6 @@
 1|[Domain]() | The main business entities and enums-->
 
 ## License & Copyright 
-&copy; 2023 EXE201 - Senik Co.
+&copy; 2024 LamVo.
 
+This project is licensed under Apache License, Version 2.0. See the [LICENSE](./LICENSE) file for details.
